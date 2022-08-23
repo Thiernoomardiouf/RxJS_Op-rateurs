@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="card">
+    <h2>La liste des données</h2>
+    <div *ngFor="let item of personsDix">
+      <span class="mx-2"> <b>Id :</b>: {{item.id}}</span>
+      <span> <b>Le titre :</b> {{item.title}}</span>
+    </div>
+    <div class="col-4">
+      <button (click)="getPersons()">Afficher</button>
+    </div>
+  </div>
+</div>
