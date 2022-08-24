@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, interval, Subscription, of, from, map, tap, take, filter, combineLatest, forkJoin, withLatestFrom, Subject, BehaviorSubject, merge, scan } from 'rxjs';
+import { Observable, interval, Subscription, of, from, map, tap, take, filter, combineLatest, forkJoin, withLatestFrom, Subject, BehaviorSubject, merge, scan, mergeAll } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +9,7 @@ import { Observable, interval, Subscription, of, from, map, tap, take, filter, c
 export class AppComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
+
 
   ngOnInit(): void {
       // const observer = {
@@ -126,7 +127,40 @@ export class AppComponent implements OnInit, OnDestroy {
       // scan()
       of(1,2,3,4,5).pipe(
         scan((acc, item)=>acc+item, 0)
-      ).subscribe(console.log); 
+      ).subscribe(console.log);
+
+      // MergeAll
+      // const hotelTest$ = of(1,2,3).pipe(
+      //   map(val => this.http.get<any>(`api/hotels/${val}`)),
+      //   mergeAll()
+      // );
+      // hotelTest$.subscribe((elem:any)=>{
+      //   console.log("hello", elem);
+      //   elem.subscribe((hotel:any)=>{
+      //     console.log(hotel);
+      //   })
+      // })
+
+      // Merge() && Map()
+      const obs1$ = interval(1000).pipe(
+        take(3),
+        map((val) => 'A' + val)
+      )
+      const obs2$ = interval(1000).pipe(
+        take(3),
+        map((val) => 'B' + val)
+      )
+      merge(obs1$, obs2$).subscribe((val) => console.log(val));
+
+      // MergeMap() combine Map() et MergeAll()
+      // const hotelTest$ = of(1,2,3).pipe(
+      //   MergeMap(val => this.http.get<any>(`api/hotels/${val}`)),
+      // );
+      // hotelTest$.subscribe((elem:any)=>{
+      //     console.log(elem);
+      //   })
+      // })
+
   }
 
   public start():void{
